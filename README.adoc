@@ -1,0 +1,10 @@
+= Execução
+
+- Get: `curl localhost:8080/test/send`
+- Post: `curl --location --request POST 'localhost:8080/test/send/post' \
+        --header 'Content-Type: application/json' \
+        --data-raw '{
+          "teste": "valor_teste"
+        }
+        '`
+- Com block: `curl localhost:8080/test/send/block` 

@@ -5,10 +5,7 @@ import br.com.cardoso.service.WebCallService
 import br.com.cardoso.util.Utils
 import org.apache.logging.log4j.LogManager
 import org.apache.logging.log4j.Logger
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestHeader
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import reactor.core.publisher.Mono
 
 @RestController
@@ -24,6 +21,11 @@ class TestController(private val webCallService: WebCallService) {
         return webCallService.call()
     }
 
+    @PostMapping("/send/post")
+    fun sendPost(@RequestBody requestBody: String): Mono<String> {
+        return webCallService.callPost(requestBody)
+    }
+
     @GetMapping("/send/block")
     fun sendBlock(): Mono<String> {
         return webCallService.blockCall()
@@ -36,6 +38,18 @@ class TestController(private val webCallService: WebCallService) {
     ): Mono<String> {
         LOG.info("Recebido o filter_header na requisição: {}", filterHeader)
         LOG.info("Recebido o token na requisição: {}", token)
+        return Mono.fromCallable { "Olá!" }
+    }
+
+    @PostMapping("/post")
+    fun post(
+        @RequestHeader("filter_header") filterHeader: String,
+        @RequestHeader("token_header") token: String,
+        @RequestBody requestBody: String
+    ): Mono<String> {
+        LOG.info("Recebido o filter_header na requisição: {}", filterHeader)
+        LOG.info("Recebido o token na requisição: {}", token)
+        LOG.info("Recebido o body na requisição: {}", requestBody)
         return Mono.fromCallable { "Olá!" }
     }
 
