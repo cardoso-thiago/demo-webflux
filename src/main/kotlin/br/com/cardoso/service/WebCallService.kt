@@ -13,4 +13,9 @@ class WebCallService {
         val client = webTargetCustom.buildWebClient()
         return client.get().uri("/test/get").retrieve().bodyToMono(String::class.java)
     }
+
+    fun blockCall(): Mono<String> {
+        val client = webTargetCustom.buildBlockWebClient()
+        return client.get().uri("/test/get").retrieve().bodyToMono(String::class.java)
+    }
 }

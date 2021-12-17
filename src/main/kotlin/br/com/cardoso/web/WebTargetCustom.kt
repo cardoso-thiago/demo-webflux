@@ -9,6 +9,7 @@ import org.springframework.web.reactive.function.client.ClientResponse
 import org.springframework.web.reactive.function.client.ExchangeFilterFunction
 import org.springframework.web.reactive.function.client.WebClient
 import reactor.core.publisher.Mono
+import java.util.*
 
 class WebTargetCustom {
 
@@ -29,6 +30,19 @@ class WebTargetCustom {
             .build()
     }
 
+    fun buildBlockWebClient(): WebClient {
+        return WebClient.builder()
+            .baseUrl("http://localhost:8080")
+            .filters { filters ->
+                run {
+                    filters.add(0, logRequest())
+                    filters.add(1, addBlockTokenRequest())
+                    filters.add(2, logResponse())
+                }
+            }
+            .build()
+    }
+
     private fun logRequest(): ExchangeFilterFunction {
         return ExchangeFilterFunction.ofRequestProcessor { clientRequest: ClientRequest ->
             LOG.info("Vai adicionar header na requisição: {} {}", clientRequest.method(), clientRequest.url())
@@ -37,6 +51,16 @@ class WebTargetCustom {
                     .header("filter_header", Utils.generateNonBlockingUUID())
                     .build()
             )
+        }
+    }
+
+    private fun addBlockTokenRequest(): ExchangeFilterFunction {
+        return ExchangeFilterFunction.ofRequestProcessor { clientRequest: ClientRequest ->
+            LOG.info("Já deve possuir o filter_header: {} ", clientRequest.headers()["filter_header"])
+            LOG.info("Vai adicionar token na requisição: {} {}", clientRequest.method(), clientRequest.url())
+            Mono.just(ClientRequest.from(clientRequest)
+                .header("token_header", UUID.randomUUID().toString())
+                .build())
         }
     }
 

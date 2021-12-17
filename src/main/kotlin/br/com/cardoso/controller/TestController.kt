@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 import reactor.core.publisher.Mono
 
-
 @RestController
 @RequestMapping("/test")
 class TestController(private val webCallService: WebCallService) {
@@ -23,6 +22,11 @@ class TestController(private val webCallService: WebCallService) {
     @GetMapping("/send")
     fun send(): Mono<String> {
         return webCallService.call()
+    }
+
+    @GetMapping("/send/block")
+    fun sendBlock(): Mono<String> {
+        return webCallService.blockCall()
     }
 
     @GetMapping("/get")
