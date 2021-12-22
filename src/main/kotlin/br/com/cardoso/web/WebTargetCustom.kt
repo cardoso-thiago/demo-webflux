@@ -29,7 +29,7 @@ class WebTargetCustom() {
             .clientConnector(
                 ReactorClientHttpConnector(
                     HttpClient.create()
-                        .wiretap("reactor.netty.http.client.HttpClient", LogLevel.DEBUG, AdvancedByteBufFormat.TEXTUAL)
+                        .wiretap("webfluxlog", LogLevel.INFO, AdvancedByteBufFormat.TEXTUAL)
                 )
             )
             .filters { filters ->

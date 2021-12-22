@@ -10,6 +10,6 @@ import reactor.blockhound.BlockHound
 class DemoWebfluxApplication
 
 fun main(args: Array<String>) {
-    BlockHound.install()
+//    BlockHound.install()
     runApplication<DemoWebfluxApplication>(*args)
 }

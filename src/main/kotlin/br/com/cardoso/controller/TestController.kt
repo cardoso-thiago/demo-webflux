@@ -13,7 +13,7 @@ import reactor.core.publisher.Mono
 class TestController(private val webCallService: WebCallService) {
 
     companion object {
-        val LOG: Logger = LogManager.getLogger()
+        val LOG: Logger = LogManager.getLogger("webfluxlog")
     }
 
     @GetMapping("/send")
